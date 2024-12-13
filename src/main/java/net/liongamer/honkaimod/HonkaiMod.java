@@ -1,6 +1,9 @@
 package net.liongamer.honkaimod;
 
 import com.mojang.logging.LogUtils;
+import net.liongamer.honkaimod.item.ModCreativeModTabs;
+import net.liongamer.honkaimod.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -23,6 +26,10 @@ public class HonkaiMod {
 
     public HonkaiMod(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
+
+        ModCreativeModTabs.register(modEventBus);
+
+        ModItems.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
