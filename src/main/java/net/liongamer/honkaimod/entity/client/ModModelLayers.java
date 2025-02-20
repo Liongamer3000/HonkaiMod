@@ -5,7 +5,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 
 public class ModModelLayers {
-    //public static final ModelLayerLocation STAR_OF_EDEN_EFFECT_LAYER = new ModelLayerLocation(
-           // new ResourceLocation(HonkaiMod.MOD_ID, "star_of_eden_effect_layer"), "main");
+    /*public static final ModelLayerLocation "THE_ENTITY_MODEL_LAYER" = new ModelLayerLocation(
+           new ResourceLocation(HonkaiMod.MOD_ID, "the_entity_model_layer"), "main");*/
 
 }
