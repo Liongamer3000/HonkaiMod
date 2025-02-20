@@ -1,6 +1,7 @@
 package net.liongamer.honkaimod.item;
 
 import net.liongamer.honkaimod.HonkaiMod;
+import net.liongamer.honkaimod.item.custom.EdenstarItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -12,7 +13,7 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, HonkaiMod.MOD_ID);
 
     public static final RegistryObject<Item> EDENSTAR = ITEMS.register("edenstar",
-            () -> new Item(new Item.Properties()));
+            () -> new EdenstarItem(new Item.Properties().fireResistant().stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

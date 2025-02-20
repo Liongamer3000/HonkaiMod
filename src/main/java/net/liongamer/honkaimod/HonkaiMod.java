@@ -1,9 +1,11 @@
 package net.liongamer.honkaimod;
 
 import com.mojang.logging.LogUtils;
+import net.liongamer.honkaimod.entity.ModEntities;
+import net.liongamer.honkaimod.entity.client.EdenstarEffectRenderer;
 import net.liongamer.honkaimod.item.ModCreativeModTabs;
 import net.liongamer.honkaimod.item.ModItems;
-import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -28,6 +30,8 @@ public class HonkaiMod {
         IEventBus modEventBus = context.getModEventBus();
 
         ModCreativeModTabs.register(modEventBus);
+
+        ModEntities.register(modEventBus);
 
         ModItems.register(modEventBus);
 
@@ -58,7 +62,7 @@ public class HonkaiMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            EntityRenderers.register(ModEntities.EDENSTAR_EFFECT.get(), EdenstarEffectRenderer::new);
         }
     }
 }
