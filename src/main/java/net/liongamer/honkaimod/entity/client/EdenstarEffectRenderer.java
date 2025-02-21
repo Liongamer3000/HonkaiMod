@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EdenstarEffectRenderer extends EntityRenderer<EdenstarEffectEntity> {
     public EdenstarEffectRenderer(EntityRendererProvider.Context pContext) {
+
         super(pContext);
     }
 

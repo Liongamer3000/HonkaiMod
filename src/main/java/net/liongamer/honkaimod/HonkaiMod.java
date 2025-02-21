@@ -3,12 +3,20 @@ package net.liongamer.honkaimod;
 import com.mojang.logging.LogUtils;
 import net.liongamer.honkaimod.entity.ModEntities;
 import net.liongamer.honkaimod.entity.client.EdenstarEffectRenderer;
+import net.liongamer.honkaimod.entity.client.InvisibleProjectileRenderer;
+import net.liongamer.honkaimod.entity.custom.EdenstarEffectEntity;
+import net.liongamer.honkaimod.entity.custom.InvisibleProjectileEntity;
 import net.liongamer.honkaimod.item.ModCreativeModTabs;
 import net.liongamer.honkaimod.item.ModItems;
+import net.liongamer.honkaimod.item.custom.EdenstarItem;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -63,6 +71,7 @@ public class HonkaiMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.EDENSTAR_EFFECT.get(), EdenstarEffectRenderer::new);
+            EntityRenderers.register(ModEntities.INVISIBLE_PROJECTILE.get(), InvisibleProjectileRenderer::new);
         }
     }
 }

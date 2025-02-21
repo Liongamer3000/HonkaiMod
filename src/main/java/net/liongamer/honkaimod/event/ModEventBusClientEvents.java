@@ -10,6 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEventBusClientEvents {
 
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
-       //event.registerLayerDefinition(ModModelLayers."the entity layer", "the entity model"::createBodyLayer);
+       //event.registerLayerDefinition(ModModelLayers."THE_ENTITY_LAYER", "theEntityModel"::createBodyLayer);
     }
 }

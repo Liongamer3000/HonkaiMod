@@ -1,22 +1,26 @@
 package net.liongamer.honkaimod.item.custom;
 
+import net.liongamer.honkaimod.HonkaiMod;
 import net.liongamer.honkaimod.entity.ModEntities;
 import net.liongamer.honkaimod.entity.custom.EdenstarEffectEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
+import net.liongamer.honkaimod.entity.custom.InvisibleProjectileEntity;
+import net.liongamer.honkaimod.item.ModItems;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+//@Mod.EventBusSubscriber(modid = HonkaiMod.MOD_ID)
 public class EdenstarItem extends Item {
-
-    final int MAX_DISTANCE = 320;
 
     public EdenstarItem(Properties pProperties) {
         super(pProperties);
@@ -28,38 +32,36 @@ public class EdenstarItem extends Item {
         return false;
     }
 
-    public BlockPos LookingAt(){
-        HitResult rt = Minecraft.getInstance().hitResult;
-
-        double x = (rt.getLocation().x);
-        double y = (rt.getLocation().y);
-        double z = (rt.getLocation().z);
-
-        double xla = Minecraft.getInstance().player.getLookAngle().x;
-        double yla = Minecraft.getInstance().player.getLookAngle().y;
-        double zla = Minecraft.getInstance().player.getLookAngle().z;
-
-        if ((x%1==0)&&(xla<0))x-=0.01;
-        if ((y%1==0)&&(yla<0))y-=0.01;
-        if ((z%1==0)&&(zla<0))z-=0.01;
-
-        BlockPos ps = new BlockPos((int) x, (int) y, (int) z);
-        BlockState bl = Minecraft.getInstance().level.getBlockState(ps);
-
-        return ps;
-    }
-
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        BlockPos positionClicked = pContext.getClickedPos();
+    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext pContext) {
         Level level = pContext.getLevel();
         Player player = pContext.getPlayer();
-        BlockPos blockPlayerIsLookingAt = level.clip(new ClipContext(player.getEyePosition(1f),
-                (player.getEyePosition(1f).add(player.getViewVector(1f).scale(MAX_DISTANCE))),
-                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getBlockPos();
-        EdenstarEffectEntity entity = new EdenstarEffectEntity(ModEntities.EDENSTAR_EFFECT.get(), level);
-        entity.moveTo(LookingAt().getCenter());
-        level.addFreshEntity(entity);
-        return InteractionResult.SUCCESS;
+
+        return super.onItemUseFirst(stack, pContext);
+    }
+
+    /*
+    @SubscribeEvent
+    public static void PlayerInteractEvent(PlayerInteractEvent event) {
+        Player pPlayer = event.getEntity();
+        InteractionHand pHand = event.getHand();
+        Level pLevel = event.getLevel();
+        EdenstarEffectEntity entity = new EdenstarEffectEntity(ModEntities.EDENSTAR_EFFECT.get(), pLevel);
+     //   entity.moveTo(pPlayer.position());
+        //entity.moveTo(LookingAt().getX(), LookingAt().getY() + 1f, LookingAt().getZ());
+        //pLevel.addFreshEntity(entity);
+    }
+    */
+
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
+        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+        if (!pLevel.isClientSide) {
+            EdenstarEffectEntity effectEntity = new EdenstarEffectEntity(ModEntities.EDENSTAR_EFFECT.get(), pLevel);
+            InvisibleProjectileEntity projectileEntity = new InvisibleProjectileEntity(pLevel, pPlayer);
+            projectileEntity.moveTo(pPlayer.position().x,pPlayer.position().y + 1.0F,pPlayer.position().z);
+            projectileEntity.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1000.0F, 0.0F);
+            pLevel.addFreshEntity(projectileEntity);
+        }
+        return InteractionResultHolder.success(itemStack);
     }
 }
