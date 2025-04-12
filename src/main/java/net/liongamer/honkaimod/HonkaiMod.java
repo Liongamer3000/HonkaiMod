@@ -9,7 +9,10 @@ import net.liongamer.honkaimod.entity.custom.InvisibleProjectileEntity;
 import net.liongamer.honkaimod.item.ModCreativeModTabs;
 import net.liongamer.honkaimod.item.ModItems;
 import net.liongamer.honkaimod.item.custom.EdenstarItem;
+import net.liongamer.honkaimod.util.ModItemProperties;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -70,6 +73,8 @@ public class HonkaiMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            ModItemProperties.addCustomItemProperties();
+
             EntityRenderers.register(ModEntities.EDENSTAR_EFFECT.get(), EdenstarEffectRenderer::new);
             EntityRenderers.register(ModEntities.INVISIBLE_PROJECTILE.get(), InvisibleProjectileRenderer::new);
         }

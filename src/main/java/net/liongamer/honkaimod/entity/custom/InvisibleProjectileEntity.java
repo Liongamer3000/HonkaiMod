@@ -1,6 +1,7 @@
 package net.liongamer.honkaimod.entity.custom;
 
 import net.liongamer.honkaimod.entity.ModEntities;
+import net.liongamer.honkaimod.item.custom.EdenstarItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -26,8 +27,15 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class InvisibleProjectileEntity extends Projectile {
+
+    public static LivingEntity owner;
+
+    public LivingEntity owner1;
+
     public InvisibleProjectileEntity(EntityType<? extends Projectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        owner = EdenstarItem.owner;
+        //System.out.println("owner in projectile ln 37: " + owner);
     }
 
     public InvisibleProjectileEntity(Level pLevel) {
@@ -50,6 +58,7 @@ public class InvisibleProjectileEntity extends Projectile {
 
     public void tick() {
         super.tick();
+        //System.out.println("projectile owner ln 60: " + owner);
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         boolean flag = false;
         if (hitresult.getType() == HitResult.Type.BLOCK) {
@@ -80,10 +89,15 @@ public class InvisibleProjectileEntity extends Projectile {
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
         Level pLevel = entity.level();
-        EdenstarEffectEntity effectEntity = new EdenstarEffectEntity(ModEntities.EDENSTAR_EFFECT.get(), pLevel);
+        EdenstarEffectEntity effectEntity = new EdenstarEffectEntity(ModEntities.EDENSTAR_EFFECT.get(), this.level());
         effectEntity.moveTo(entity.position().x, entity.position().y, entity.position().z);
-        pLevel.addFreshEntity(effectEntity);
+        //pLevel.addFreshEntity(effectEntity);
+        this.level().addFreshEntity(effectEntity);
         super.onHitEntity(pResult);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte)3);
+            this.discard();
+        }
     }
 
     /**
@@ -91,16 +105,15 @@ public class InvisibleProjectileEntity extends Projectile {
      */
 
     protected void onHit(HitResult pResult) {
-
         EdenstarEffectEntity effectEntity = new EdenstarEffectEntity(ModEntities.EDENSTAR_EFFECT.get(), this.level());
         effectEntity.moveTo(pResult.getLocation().x, pResult.getLocation().y, pResult.getLocation().z);
+        //effectEntity.setOwner(owner);
         this.level().addFreshEntity(effectEntity);
         super.onHit(pResult);
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte)3);
             this.discard();
         }
-
     }
     @Override
     protected boolean canHitEntity(Entity pTarget) {

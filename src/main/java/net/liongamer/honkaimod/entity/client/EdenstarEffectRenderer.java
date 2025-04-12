@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class EdenstarEffectRenderer extends EntityRenderer<EdenstarEffectEntity> {
+
     public EdenstarEffectRenderer(EntityRendererProvider.Context pContext) {
 
         super(pContext);
@@ -22,9 +23,7 @@ public class EdenstarEffectRenderer extends EntityRenderer<EdenstarEffectEntity>
     @Override
     public void render(EdenstarEffectEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack,
                        MultiBufferSource pBuffer, int pPackedLight) {
-
-
-
+        shadowRadius = 2.5f;
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
     }
 }

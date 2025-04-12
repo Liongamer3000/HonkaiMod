@@ -1,0 +1,6 @@
+{
+  "parent": "honkaimod:item/edenstar",
+  "textures": {
+    "layer0": "honkaimod:item/edenstar_zero"
+  }
+}
