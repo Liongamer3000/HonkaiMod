@@ -4,22 +4,18 @@ import com.mojang.logging.LogUtils;
 import net.liongamer.honkaimod.entity.ModEntities;
 import net.liongamer.honkaimod.entity.client.EdenstarEffectRenderer;
 import net.liongamer.honkaimod.entity.client.InvisibleProjectileRenderer;
-import net.liongamer.honkaimod.entity.custom.EdenstarEffectEntity;
-import net.liongamer.honkaimod.entity.custom.InvisibleProjectileEntity;
 import net.liongamer.honkaimod.item.ModCreativeModTabs;
 import net.liongamer.honkaimod.item.ModItems;
-import net.liongamer.honkaimod.item.custom.EdenstarItem;
+import net.liongamer.honkaimod.particle.EdenstarEffectParticles;
+import net.liongamer.honkaimod.particle.EdenstarEffectParticles2;
+import net.liongamer.honkaimod.particle.EdenstarEffectParticles3;
+import net.liongamer.honkaimod.particle.ModParticles;
 import net.liongamer.honkaimod.util.ModItemProperties;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,7 +42,10 @@ public class HonkaiMod {
 
         ModItems.register(modEventBus);
 
+        ModParticles.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
+
 
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -77,6 +76,15 @@ public class HonkaiMod {
 
             EntityRenderers.register(ModEntities.EDENSTAR_EFFECT.get(), EdenstarEffectRenderer::new);
             EntityRenderers.register(ModEntities.INVISIBLE_PROJECTILE.get(), InvisibleProjectileRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerParticleProvider(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(ModParticles.EDENSTAR_EFFECT_PARTICLES.get(), EdenstarEffectParticles.Provider::new);
+            event.registerSpriteSet(ModParticles.EDENSTAR_EFFECT_PARTICLES_2.get(), EdenstarEffectParticles2.Provider::new);
+            event.registerSpriteSet(ModParticles.EDENSTAR_EFFECT_PARTICLES_3.get(), EdenstarEffectParticles3.Provider::new);
+            event.registerSpriteSet(ModParticles.EDENSTAR_EFFECT_PARTICLES_4.get(), EdenstarEffectParticles3.Provider::new);
+            event.registerSpriteSet(ModParticles.EDENSTAR_EFFECT_PARTICLES_5.get(), EdenstarEffectParticles3.Provider::new);
         }
     }
 }
